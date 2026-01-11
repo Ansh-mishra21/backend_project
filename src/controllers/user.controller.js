@@ -2,10 +2,10 @@ import {User} from "../models/user.model.js"
 import {asyncHandlers} from "../utils/asyncHandler.js"
 import {ApiError} from "../utils/apiError.js"
 import {ApiResponse} from "../utils/apiResponse.js"
-import { uploadOnCloundinary } from "../utils/cloudinary.js"
+import { uploadOnCloudinary } from "../utils/cloudinary.js"
 
 
-const registerUSer = asyncHandlers( async (req, res) => {
+const registerUser = asyncHandlers( async (req, res) => {
    
     /* ============================
      1. Extract user details
@@ -27,7 +27,7 @@ const registerUSer = asyncHandlers( async (req, res) => {
      3. Check if user exists
   ============================ */
 
-  const existedUser  = User.findOne({
+  const existedUser  = await User.findOne({
     $or: [{username}, {email}]
   })
 
@@ -46,8 +46,8 @@ const registerUSer = asyncHandlers( async (req, res) => {
     throw new ApiError(400, "Avatar file is required")
   }
 
-  const avatar = await uploadOnCloundinary(avatarLocalPath)
-  const coverImage =  await uploadOnCloundinary(coverImageLocalPath)
+  const avatar = await uploadOnCloudinary(avatarLocalPath)
+  const coverImage =  await uploadOnCloudinary(coverImageLocalPath)
   if(!avatar) {
     throw new ApiError(500, "Avatar upload failed")
   }
@@ -85,4 +85,4 @@ const registerUSer = asyncHandlers( async (req, res) => {
 
 })
 
-export {registerUSer}
+export {registerUser}
