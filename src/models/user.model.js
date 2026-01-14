@@ -58,10 +58,10 @@ const userSchema = new Schema({
 //“Ye Mongoose pre-save middleware user ka password sirf tab bcrypt se hash karta hai jab password naya ho ya modify hua ho.”
 
 userSchema.pre("save", async function(next) {
-    if(!this.isModified(Password)) return next();
+    if(!this.isModified("password")) return next();
 
     this.password = await bcrypt.hash(this.password, 10)
-    next();
+    //next();
 })
 
 // custom methos which check and compare passwords 

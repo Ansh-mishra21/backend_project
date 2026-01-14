@@ -6,7 +6,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 
 
 const registerUser = asyncHandlers( async (req, res) => {
-   
+   console.log("req", req.body);
     /* ============================
      1. Extract user details
   ============================ */
@@ -39,8 +39,9 @@ const registerUser = asyncHandlers( async (req, res) => {
      4. Handle avatar upload
   ============================ */
 
-  const avatarLocalPath = req.files?.avatar[0].path;
-  const coverImageLocalPath = req.files?.coverImage[0].path;
+  const avatarLocalPath = req.files?.avatar?.[0].path;
+  console.log("req.files", req.files);
+  const coverImageLocalPath = req.files?.coverImage?.[0].path;
 
   if(!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is required")
