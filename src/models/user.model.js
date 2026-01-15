@@ -58,7 +58,7 @@ const userSchema = new Schema({
 //“Ye Mongoose pre-save middleware user ka password sirf tab bcrypt se hash karta hai jab password naya ho ya modify hua ho.”
 
 userSchema.pre("save", async function(next) {
-    if(!this.isModified("password")) return next();
+    if(!this.isModified("password")) return next();  // error 1 : async await use kiya hai to last m next function call nhii karenge
 
     this.password = await bcrypt.hash(this.password, 10)
     //next();
