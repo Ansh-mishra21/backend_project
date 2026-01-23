@@ -57,8 +57,8 @@ const userSchema = new Schema({
 
 //“Ye Mongoose pre-save middleware user ka password sirf tab bcrypt se hash karta hai jab password naya ho ya modify hua ho.”
 
-userSchema.pre("save", async function(next) {
-    if(!this.isModified("password")) return next();  // error 1 : async await use kiya hai to last m next function call nhii karenge
+userSchema.pre("save", async function() {
+    if(!this.isModified("password")) return;  // error 1 : async await use kiya hai to last m next function call nhii karenge
 
     this.password = await bcrypt.hash(this.password, 10)
     //next();
@@ -66,12 +66,12 @@ userSchema.pre("save", async function(next) {
 
 // custom methos which check and compare passwords 
 
-userSchema.method.isPasswordCorrect = async function(password) {
+userSchema.methods.isPasswordCorrect = async function(password) {
     return await bcrypt.compare(password, this.password)
 }
 
 
-userSchema.method.generateAccessToken = function() {
+userSchema.methods.generateAccessToken = function() {
     return jwt.sign (
         {
             _id: this._id,
@@ -85,7 +85,7 @@ userSchema.method.generateAccessToken = function() {
     )
 }
 
-userSchema.method.generateRefreshToken = function() {
+userSchema.methods.generateRefreshToken = function() {
     return jwt.sign (
         {
             _id: this._id,
